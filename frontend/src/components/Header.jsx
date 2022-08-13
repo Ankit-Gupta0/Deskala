@@ -1,0 +1,30 @@
+import { FaSignInAlt, FaUser } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
+
+const Header = () => {
+
+  return (
+    
+    <header className='header'>
+      <div className='logo'>
+        <Link to='/'>Deskala</Link>
+      </div>
+      <ul>
+          <>
+            <li>
+              <Link to='/login'>
+                <FaSignInAlt /> Login
+              </Link>
+            </li>
+            <li>
+              <Link to='/signup'>
+                <FaUser /> Sign Up
+              </Link>
+            </li>
+          </>
+      </ul>
+    </header>
+  )
+}
+
+export default Header
