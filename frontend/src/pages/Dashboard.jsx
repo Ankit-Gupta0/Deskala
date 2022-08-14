@@ -29,7 +29,7 @@ const Dashboard = () => {
   
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: '#00FFFF',
     },
     // hide last border
     '&:last-child td, &:last-child th': {

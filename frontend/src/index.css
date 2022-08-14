@@ -136,6 +136,41 @@ h3 {
   font-weight: 600;
 }
 
+/* Styling for create candidate form */
+
+
+.candidate__heading {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 40px;
+}
+
+.candidate__form-group {
+  margin-bottom: 10px;
+}
+
+.candidate__form-group input,
+.candidate__form-group textarea,
+.candidate__form-group select {
+  /* width: 100%; */
+  padding: 10px;
+  border: 1px solid #e6e6e6;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-family: inherit;
+}
+
+.candidate__form-group label {
+  text-align: left;
+  display: block;
+  margin: 0 0 5px 3px;
+  font-weight: 600;
+}
+
+.candidate__form-control {
+  width: 20vw;
+}
+
 .validation {
   color: #00AEEF;
   text-align: right;
@@ -151,6 +186,17 @@ h3 {
   scale: 1.6;
 }
 
+.state__select {
+  text-align: left;
+  border-radius: 5px;
+  font-family: inherit;
+}
+
+.menui {
+  font-family: inherit;
+}
+
+/* button */
 .newCandidate {
   margin-top: 30px;
   text-decoration: none;
@@ -183,14 +229,35 @@ h3 {
   margin-right: 8px;
 }
 
-.btn-reverse {
-  background: #fff;
-  color: #00AEEF;
-}
-
 .btn-block {
   width: 50%;
   margin-bottom: 10px;
+}
+
+.candidate__button {
+  display: flex;
+  justify-content: flex-end;
+  gap: 40px;
+}
+
+.candidate__btn {
+  padding: 20px;
+  margin-top: 50px;
+  border: 1px solid #00AEEF;
+  border-radius: 5px;
+  background: #00AEEF;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  appearance: button;
+  width: 12vw;
+}
+
+.btn-reverse {
+  background: #fff;
+  color: #00AEEF;
 }
 
 .btn:hover {
