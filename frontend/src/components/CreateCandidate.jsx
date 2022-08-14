@@ -24,13 +24,13 @@ const CreateCandidate = () => {
   const [formData, setFormData] = useState({
     name: '',
     dob: '',
-    age: '',
+    email: '',
     address: '',
     state: '',
     pincode: '',
   })
 
-  const { name, dob, age, address, state, pincode } = formData
+  const { name, dob, email, address, state, pincode } = formData
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -98,14 +98,14 @@ const CreateCandidate = () => {
                       />
                     </div>
                     <div className='candidate__form-group'>
-                      <label htmlFor='age'>Age</label>
+                      <label htmlFor='email'>Email</label>
                       <input
-                        type='number'
+                        type='email'
                         className='candidate__form-control'
-                        id='age'
-                        name='age'
-                        value={age}
-                        placeholder='enter your age'
+                        id='email'
+                        name='email'
+                        value={email}
+                        placeholder='enter your email'
                         onChange={onChange}
                       />
                     </div>
