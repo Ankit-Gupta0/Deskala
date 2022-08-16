@@ -1,7 +1,11 @@
 import { useState } from 'react'
 import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
-import StateDropbox from './StateDropbox'
+// import StateDropbox from './StateDropbox'
+import { useDispatch } from 'react-redux'
+import { createCandidate } from '../features/candidates/candidateSlice'
+import { MenuItem, FormControl, Select } from '@mui/material'
+import State from './State'
 
 const style = {
   position: 'absolute',
@@ -15,10 +19,12 @@ const style = {
   p: 4,
 }
 
-const CreateCandidate = () => {
+const CandidateForm = () => {
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
+
+  const dispatch = useDispatch()
 
   // handling form
   const [formData, setFormData] = useState({
@@ -41,14 +47,23 @@ const CreateCandidate = () => {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    const userData = {
-      name,
-      dob,
-      age,
-      address,
-      state,
-      pincode,
-    }
+    // const userData = {
+    //   name,
+    //   dob,
+    //   email,
+    //   address,
+    //   state,
+    //   pincode,
+    // }
+    dispatch(createCandidate({ formData }))
+    setFormData({
+      name: '',
+      dob: '',
+      email: '',
+      address: '',
+      state: '',
+      pincode: '',
+    })
   }
 
   return (
@@ -125,7 +140,20 @@ const CreateCandidate = () => {
                     </div>
                     <div className='candidate__form-group'>
                       <label htmlFor='state'>State</label>
-                      <StateDropbox />
+                        <FormControl className='candidate__form-group'>
+                          <Select
+                            className='candidate__form-control state__select'
+                            name='state'
+                            value={state}
+                            onChange={onChange}
+                            displayEmpty
+                            inputProps={{ 'aria-label': 'Without label' }}
+                          >
+                              {State.map((s,id) => (
+                                  <MenuItem className='menui' key={id} value={s.value}>{s.name}</MenuItem>
+                              ))}
+                          </Select>
+                      </FormControl>
                     </div>
                     <div className='candidate__form-group'>
                       <label htmlFor='pindode'>Pin Code</label>
@@ -158,4 +186,4 @@ const CreateCandidate = () => {
   )
 }
 
-export default CreateCandidate
+export default CandidateForm

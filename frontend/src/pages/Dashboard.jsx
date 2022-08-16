@@ -9,10 +9,15 @@ import {
   TableRow,
   Paper,
 } from '@mui/material'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 import Dropbox from '../components/Dropbox';
 import {FiEdit2} from 'react-icons/fi'
 import {RiDeleteBin6Line} from 'react-icons/ri'
-import CreateCandidate from '../components/CreateCandidate';
+import CandidateForm from '../components/CandidateForm';
+import Spinner from '../components/Spinner'
+import { getCandidates, reset } from '../features/candidates/candidateSlice'
 
 const Dashboard = () => {
 
@@ -37,10 +42,39 @@ const Dashboard = () => {
     },
   }));
 
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
   
   function createData(sno, name, dob, email) {
     return { sno, name, dob, email };
   }
+
+  const { user } = useSelector((state) => state.auth)
+  const { candidates, isLoading, isError, message } = useSelector(
+    (state) => state.candidates
+  )
+
+  useEffect(() => {
+    if (isError) {
+      console.log(message)
+    }
+
+    if (!user) {
+      navigate('/login')
+    }
+
+    dispatch(getCandidates())
+
+    return () => {
+      dispatch(reset())
+    }
+  }, [user, navigate, isError, message, dispatch])
+
+  if (isLoading) {
+    return <Spinner />
+  }
+
   
   const rows = [
     createData(1, 'Rajesh', '25/03/1999', 'rajeshkumar@gmail.com' ),
@@ -91,7 +125,7 @@ const Dashboard = () => {
       </Table>
     </TableContainer>
 
-    <CreateCandidate />
+    <CandidateForm />
     </>
   )
 }
