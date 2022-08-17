@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
-// import StateDropbox from './StateDropbox'
 import { useDispatch } from 'react-redux'
 import { createCandidate } from '../features/candidates/candidateSlice'
 import { MenuItem, FormControl, Select } from '@mui/material'

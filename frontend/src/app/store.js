@@ -5,6 +5,6 @@ import candidateReducer from '../features/candidates/candidateSlice'
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    candidates: candidateReducer
+    candidates: candidateReducer,
   },
 })
