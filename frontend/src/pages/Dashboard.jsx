@@ -17,7 +17,8 @@ import {FiEdit2} from 'react-icons/fi'
 import {RiDeleteBin6Line} from 'react-icons/ri'
 import CandidateForm from '../components/CandidateForm';
 import Spinner from '../components/Spinner'
-import { getCandidates, reset } from '../features/candidates/candidateSlice'
+import { getCandidates } from '../features/candidates/candidateSlice'
+import {reset} from '../features/auth/authSlice'
 
 const Dashboard = () => {
 
@@ -54,7 +55,9 @@ const Dashboard = () => {
   const { candidates, isLoading, isError, message } = useSelector(
     (state) => state.candidates
   )
-
+  console.log(candidates)
+  console.log(isError)
+  // debugger
   useEffect(() => {
     if (isError) {
       console.log(message)

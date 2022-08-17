@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = '/api/candidates/'
+const API_URL = 'http://localhost:5000/api/candidates/'
 
 // Create new candidate
 const createCandidate = async (candidateData, token) => {
