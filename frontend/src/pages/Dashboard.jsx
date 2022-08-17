@@ -13,12 +13,12 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import Dropbox from '../components/Dropbox';
-import {FiEdit2} from 'react-icons/fi'
 import {RiDeleteBin6Line} from 'react-icons/ri'
 import CandidateForm from '../components/CandidateForm';
 import Spinner from '../components/Spinner'
-import { getCandidates } from '../features/candidates/candidateSlice'
+import { getCandidates, deleteCandidate } from '../features/candidates/candidateSlice'
 import {reset} from '../features/auth/authSlice'
+import CandidateEditForm from '../components/CandidateEditForm';
 
 const Dashboard = () => {
 
@@ -46,18 +46,11 @@ const Dashboard = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  
-  function createData(sno, name, dob, email) {
-    return { sno, name, dob, email };
-  }
-
   const { user } = useSelector((state) => state.auth)
   const { candidates, isLoading, isError, message } = useSelector(
     (state) => state.candidates
   )
-  console.log(candidates)
-  console.log(isError)
-  // debugger
+  console.log(candidates);
   useEffect(() => {
     if (isError) {
       console.log(message)
@@ -77,18 +70,13 @@ const Dashboard = () => {
   if (isLoading) {
     return <Spinner />
   }
-
-  
-  const rows = [
-    createData(1, 'Rajesh', '25/03/1999', 'rajeshkumar@gmail.com' ),
-    createData(2, 'Rajesh', '25/03/1999', 'rajeshkumar@gmail.com' ),
-    createData(3, 'Rajesh', '25/03/1999', 'rajeshkumar@gmail.com' ),
-    createData(4, 'Rajesh', '25/03/1999', 'rajeshkumar@gmail.com' ),
-    createData(5, 'Rajesh', '25/03/1999', 'rajeshkumar@gmail.com' ),
-  ];
+    
 
   return (
     <>
+      <section>
+        <h3 className='candidate__heading'>Candidates List : {candidates.length}</h3>
+      </section>
       <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
@@ -103,22 +91,20 @@ const Dashboard = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row, id) => (
+          {!isLoading && candidates.map((cand, id) => (
             <StyledTableRow key={id}>
               <StyledTableCell component="th" scope="row">
-                {row.sno}
+                {id+1}
               </StyledTableCell>
-              <StyledTableCell align="left">{row.name}</StyledTableCell>
-              <StyledTableCell align="left">{row.dob}</StyledTableCell>
-              <StyledTableCell align="left">{row.email}</StyledTableCell>
+              <StyledTableCell align="left">{cand.name}</StyledTableCell>
+              <StyledTableCell align="left">{new Date(cand.dob).toISOString().substring(0,10)}</StyledTableCell>
+              <StyledTableCell align="left">{cand.email}</StyledTableCell>
               <StyledTableCell align="center">{<Dropbox />}</StyledTableCell>
               <StyledTableCell align="left">
-                <button className='dashboard__button'>
-                  {<FiEdit2 />}
-                </button>
+                  <CandidateEditForm index={id}/>
               </StyledTableCell>
               <StyledTableCell align="left">
-                <button className='dashboard__button'>
+                <button onClick={() => dispatch(deleteCandidate(cand._id))} className='dashboard__button'>
                   {<RiDeleteBin6Line />}
                 </button>
               </StyledTableCell>

@@ -3,13 +3,22 @@ const asyncHandler = require('express-async-handler')
 const Candidate = require('../models/candidateModel')
 const User = require('../models/userModel')
 
-// @desc    Get candidatess
+// @desc    Get candidates
 // @route   GET /api/candidates
 // @access  Private
 const getCandidates = asyncHandler(async (req, res) => {
   const candidates = await Candidate.find({ user: req.user.id })
 
   res.status(200).json(candidates)
+})
+
+// @desc    Get one candidates
+// @route   GET /api/candidates
+// @access  Private
+const getOneCandidate = asyncHandler(async (req, res) => {
+  const candidate = await Candidate.findById(req.params.id)
+  console.log(candidate)
+  res.status(200).json(candidate)
 })
 
 // @desc    Set candidate
@@ -97,4 +106,5 @@ module.exports = {
   setCandidate,
   updateCandidate,
   deleteCandidate,
+  getOneCandidate
 }

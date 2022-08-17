@@ -47,6 +47,46 @@ export const getCandidates = createAsyncThunk(
   }
 )
 
+// Get one candidate
+export const getOneCandidate = createAsyncThunk(
+  'candidates/getOne',
+  async (id, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token
+      return await candidateService.getOneCandidate(id, token)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+// Update user candidate
+export const updateCandidate = createAsyncThunk(
+  'candidates/update',
+  async (formdata, thunkAPI) => {
+    try {
+      const id = formdata.id;
+      const token = thunkAPI.getState().auth.user.token
+      await candidateService.updateCandidate(id, formdata, token);
+      return await candidateService.getCandidates(token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 // Delete user candidate
 export const deleteCandidate = createAsyncThunk(
   'candidates/delete',
@@ -96,6 +136,32 @@ export const candidateSlice = createSlice({
         state.candidates = action.payload
       })
       .addCase(getCandidates.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+      })
+      .addCase(getOneCandidate.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getOneCandidate.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.candidates = action.payload
+      })
+      .addCase(getOneCandidate.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+      })
+      .addCase(updateCandidate.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(updateCandidate.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.candidates = action.payload
+      })
+      .addCase(updateCandidate.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload

@@ -73,10 +73,12 @@ const Signup = () => {
                 <label htmlFor='email'>Email id</label>
                 <input
                   type='email'
+                  pattern='^[a-z0-9](\.?[a-z0-9]){3,}@gmail\.com$'
                   className='form-control'
                   id='email'
                   name='email'
                   value={email}
+                  
                   placeholder='enter your email id'
                   onChange={onChange}
                 />
@@ -91,6 +93,8 @@ const Signup = () => {
                   value={phone}
                   placeholder='enter your phone number'
                   onChange={onChange}
+                  minLength={10}
+                  maxLength={10}
                 />
               </div>
               <div className='form-group'>
@@ -103,6 +107,8 @@ const Signup = () => {
                   value={password}
                   placeholder='enter password'
                   onChange={onChange}
+                  minLength={5}
+                  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$"
                 />
                 <div className="validation">
                     Minimum 8 Alpha numeric

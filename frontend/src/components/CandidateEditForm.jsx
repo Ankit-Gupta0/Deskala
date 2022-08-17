@@ -1,10 +1,15 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
-import { useDispatch } from 'react-redux'
-import { createCandidate } from '../features/candidates/candidateSlice'
+import { useSelector, useDispatch } from 'react-redux'
+import {
+  updateCandidate,
+} from '../features/candidates/candidateSlice'
 import { MenuItem, FormControl, Select } from '@mui/material'
 import State from './State'
+import { FiEdit2 } from 'react-icons/fi'
+import { useNavigate } from 'react-router-dom'
+
 
 const style = {
   position: 'absolute',
@@ -18,23 +23,40 @@ const style = {
   p: 4,
 }
 
-const CandidateForm = () => {
-  const [open, setOpen] = useState(false)
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
+const CandidateEditForm = ({ index }) => {
+  console.log(index)
+  const navigate = useNavigate()
+
+
+  const { candidates, isLoading, isError, message } = useSelector(
+    (state) => state.candidates
+  )
 
   const dispatch = useDispatch()
+  const [open, setOpen] = useState(false)
+  const handleOpen = () => {
+    setOpen(true)
+  }
+  const handleClose = () => setOpen(false)
+
+  useEffect(() => {
+     console.log(candidates)
+  }, [])
+  
+  //  console.log(oneCandidate)
 
   // handling form
   const [formData, setFormData] = useState({
-    name: '',
-    dob: '',
-    email: '',
-    address: '',
-    state: '',
-    pincode: '',
+    id: String(candidates[index]._id),
+    name: candidates[index].name,
+    dob: new Date(candidates[index].dob).toISOString().substring(0,10),
+    email: candidates[index].email,
+    address: candidates[index].address,
+    state: candidates[index].state,
+    pincode: candidates[index].pincode,
   })
 
+  console.log(String(candidates[index]._id))
   const { name, dob, email, address, state, pincode } = formData
 
   const onChange = (e) => {
@@ -46,7 +68,8 @@ const CandidateForm = () => {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    dispatch(createCandidate( formData ))
+
+    dispatch(updateCandidate( formData ));
     setFormData({
       name: '',
       dob: '',
@@ -55,12 +78,13 @@ const CandidateForm = () => {
       state: '',
       pincode: '',
     })
+    // navigate('/')
   }
 
   return (
     <div>
-      <button className='newCandidate' onClick={handleOpen}>
-        + Add new candidate
+      <button className='dashboard__button' onClick={handleOpen}>
+        {<FiEdit2 />}
       </button>
       <Modal
         open={open}
@@ -68,13 +92,11 @@ const CandidateForm = () => {
         aria-labelledby='modal-modal-title'
         aria-describedby='modal-modal-description'
       >
-        <div className="container">
+        <div className='container'>
           <Box sx={style}>
-            
-
             <section className='form'>
               <section>
-                <h3 className='candidate__heading'>Create Candidate</h3>
+                <h3 className='candidate__heading'>Update Candidate</h3>
               </section>
               <form onSubmit={onSubmit}>
                 <div className='columns'>
@@ -131,19 +153,25 @@ const CandidateForm = () => {
                     </div>
                     <div className='candidate__form-group'>
                       <label htmlFor='state'>State</label>
-                        <FormControl className='candidate__form-group'>
-                          <Select
-                            className='candidate__form-control state__select'
-                            name='state'
-                            value={state}
-                            onChange={onChange}
-                            displayEmpty
-                            inputProps={{ 'aria-label': 'Without label' }}
-                          >
-                              {State.map((s,id) => (
-                                  <MenuItem className='menui' key={id} value={s.value}>{s.name}</MenuItem>
-                              ))}
-                          </Select>
+                      <FormControl className='candidate__form-group'>
+                        <Select
+                          className='candidate__form-control state__select'
+                          name='state'
+                          value={state}
+                          onChange={onChange}
+                          displayEmpty
+                          inputProps={{ 'aria-label': 'Without label' }}
+                        >
+                          {State.map((s, id) => (
+                            <MenuItem
+                              className='menui'
+                              key={id}
+                              value={s.value}
+                            >
+                              {s.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
                       </FormControl>
                     </div>
                     <div className='candidate__form-group'>
@@ -161,11 +189,18 @@ const CandidateForm = () => {
                   </div>
                 </div>
                 <div className='candidate__button'>
-                  <button type='submit' className='candidate__btn btn-reverse' onClick={handleClose}>
+                  <button
+                    type='submit'
+                    className='candidate__btn btn-reverse'
+                    onClick={handleClose}
+                  >
                     Cancel
                   </button>
-                  <button type='submit' className='candidate__btn candidate__btn-block'>
-                    Create
+                  <button
+                    type='submit'
+                    className='candidate__btn candidate__btn-block'
+                  >
+                    Update
                   </button>
                 </div>
               </form>
@@ -177,4 +212,4 @@ const CandidateForm = () => {
   )
 }
 
-export default CandidateForm
+export default CandidateEditForm
